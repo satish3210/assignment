@@ -14,10 +14,11 @@ stages:
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
-          script: 'tflint --chdir=$(System.DefaultWorkingDirectory)\dev --recursive /format:tflient.json'
+          script: |
+            tflint --chdir "$(System.DefaultWorkingDirectory)\enviroment\dev" --recursive --format json | Out-File "$(System.DefaultWorkingDirectory)\tflint.json"
       - task: PublishPipelineArtifact@1
         inputs:
-         targetPath: '$(System.DefaultWorkingDirectory)tflint.json'
+         targetPath: '$(System.DefaultWorkingDirectory)\tflint.json'
          artifact: 'tflintresult'
          publishLocation: 'pipeline'
 - stage: Terraform_init
@@ -32,7 +33,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)\dev'
+        workingDirectory: '$(System.DefaultWorkingDirectory)\enviroment\dev'
         backendServiceArm: 'svc'
         backendAzureRmStorageAccountName: 'storage5522'
         backendAzureRmContainerName: 'cont1'
