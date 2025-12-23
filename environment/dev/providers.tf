@@ -1,15 +1,20 @@
 terraform {
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "4.32.0"
+      source = "hashicorp/azurerm"
+      version = "4.57.0"
     }
   }
-
+backend "azurerm" {
+    resource_group_name  = "satrg"
+    storage_account_name = "storage5522"
+    container_name       = "cont1"
+    key                  = "terraform.tfstate"
+  }
 }
 
-provider "azurerm" {
-  features {}
-  subscription_id = "61f220b6-5e66-44f2-a125-be948dad3988"
 
+provider "azurerm" {
+features {}
+subscription_id = "61f220b6-5e66-44f2-a125-be948dad3988"
 }
